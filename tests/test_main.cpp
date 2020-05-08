@@ -55,6 +55,24 @@ int main() {
     compareVector = std::vector({99, 98, 97, 96});
     assert(compareBufferContents(buffer5, compareVector));
 
+    // Random stuff from the example.
+    CircularBuffer<int, 3> buffer6(10);
+    compareVector = std::vector({10, 10, 10});
+    assert(compareBufferContents(buffer6, compareVector));
+
+    buffer6.push(1);
+    buffer6.push(2);
+    compareVector = std::vector({2, 1, 10});
+    assert(compareBufferContents(buffer6, compareVector));
+
+    int exampleVar = buffer6[2];
+    assert(exampleVar == 10);
+
+    buffer6.push(42);
+    buffer6.push(404);
+    compareVector = std::vector({404, 42, 2});
+    assert(compareBufferContents(buffer6, compareVector));
+
     std::cout << "All tests passed." << std::endl;
 
     return 0;
