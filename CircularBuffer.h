@@ -35,6 +35,23 @@ public:
     }
 
     /**
+     * Pushes elements into the buffer.
+     *
+     * @param value  The value to push.
+     * @post value has been copied to index 0.
+     *       The oldest value has been written over.
+     *       All other previous values are found at their old index + 1.
+     */
+    void push(const value_type value)
+    {
+        // Move the head, overwriting any old data.
+        head = decrement(head);
+
+        // Write the value
+        valueArr[head] = value;
+    }
+
+    /**
      * Wrapping access to the buffer.
      * @throws std::out_of_range if index is larger than maxSize.
      */
@@ -63,23 +80,6 @@ public:
     size_type size() const
     {
         return arrLen;
-    }
-
-    /**
-     * Pushes elements into the buffer.
-     *
-     * @param value  The value to push.
-     * @post value has been copied to index 0.
-     *       The oldest value has been written over.
-     *       All other previous values are found at their old index + 1.
-     */
-    void push(const value_type value)
-    {
-        // Move the head, overwriting any old data.
-        head = decrement(head);
-
-        // Write the value
-        valueArr[head] = value;
     }
 
 private:
