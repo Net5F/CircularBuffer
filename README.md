@@ -1,6 +1,7 @@
 ## Usage
 ```
 #include "CircularBuffer.h"
+using namespace AM;
 
 CircularBuffer<int, 3> buffer(10);
 // Buffer is now [10, 10, 10]
