@@ -24,7 +24,6 @@ public:
 
     CircularBuffer()
     : head(arrLen - 1)
-    , valueArr{}
     {
     }
 
