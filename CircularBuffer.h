@@ -94,7 +94,7 @@ private:
      * Index of the most recently inserted element.
      * Starts at the end of the underlying array and gets decremented during every push.
      */
-    volatile size_type head;
+    size_type head;
 
     //----------------------------------------------------------------------------
     // Convenience Functions
