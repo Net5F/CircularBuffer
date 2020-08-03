@@ -33,6 +33,23 @@ public:
         valueArr.fill(initialValue);
     }
 
+    CircularBuffer(const CircularBuffer& other)
+    : head(other.head)
+    {
+        valueArr = other.valueArr;
+    }
+
+    CircularBuffer& operator=(const CircularBuffer& other)
+    {
+        // Check for self assignment.
+        if (this != &other) {
+            head = other.head;
+            valueArr = other.valueArr;
+        }
+
+        return *this;
+    }
+
     /**
      * Pushes elements into the buffer.
      *
