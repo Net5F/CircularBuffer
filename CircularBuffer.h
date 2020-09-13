@@ -67,6 +67,24 @@ public:
         valueArr[head] = value;
     }
 
+    template <class... Args>
+    void emplace_ctor(Args&&... args) {
+        // Move the head, overwriting any old data.
+        head = decrement(head);
+
+        // Write the value
+        valueArr[head] = value_type(args...);
+    }
+
+    template <class... Args>
+    void emplace_aggregate(Args&&... args) {
+        // Move the head, overwriting any old data.
+        head = decrement(head);
+
+        // Write the value
+        valueArr[head] = {args...};
+    }
+
     /**
      * Wrapping access to the buffer.
      * @throws std::out_of_range if index is larger than maxSize.
