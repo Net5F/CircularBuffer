@@ -1,5 +1,4 @@
-#ifndef CIRCULARBUFFER_H_
-#define CIRCULARBUFFER_H_
+#pragma once
 
 #include <array>
 #include <stdexcept>
@@ -23,7 +22,8 @@ public:
 
 
     CircularBuffer()
-    : head(arrLen - 1)
+    : valueArr{}
+    , head(arrLen - 1)
     {
     }
 
@@ -116,6 +116,14 @@ public:
         return arrLen;
     }
 
+    /**
+     * Fills all elements in the underlying container with the given value.
+     */
+    void fill(const value_type value)
+    {
+        valueArr.fill(value);
+    }
+
 private:
     /**
      * The length of the underlying array.
@@ -153,5 +161,3 @@ private:
 };
 
 } // namespace AM
-
-#endif /* CIRCULARBUFFER_H_ */
