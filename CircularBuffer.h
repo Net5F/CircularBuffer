@@ -91,8 +91,8 @@ public:
      */
     reference operator[](size_type index)
     {
-        if (index > arrLen) {
-            throw std::out_of_range("index larger than maxSize.");
+        if (index >= arrLen) {
+            throw std::out_of_range("index larger than maxSize - 1.");
         }
 
         size_type requestedIndex = increment(head, index);
@@ -100,8 +100,8 @@ public:
     }
     const_reference operator[](size_type index) const
     {
-        if (index > arrLen) {
-            throw std::out_of_range("index larger than maxSize.");
+        if (index >= arrLen) {
+            throw std::out_of_range("index larger than maxSize - 1.");
         }
 
         size_type requestedIndex = increment(head, index);
