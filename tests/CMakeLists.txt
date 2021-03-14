@@ -16,7 +16,7 @@ target_link_libraries(CircularBufferTests
 )
 
 # Compile with C++17
-target_compile_features(CircularBufferTests PRIVATE cxx_std_17)
+target_compile_features(CircularBufferTests PRIVATE cxx_std_20)
 set_target_properties(CircularBufferTests PROPERTIES CXX_EXTENSIONS OFF)
 
 # CircularBuffer target.
