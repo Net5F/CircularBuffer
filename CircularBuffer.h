@@ -1,19 +1,20 @@
 #pragma once
 
-#include <array>
+#include <vector>
 #include <stdexcept>
+#include <algorithm>
 
 namespace AM {
 
 /**
- * @class CircularBuffer
+ * CircularBuffer
  *
- * @brief A simple, exceptionally not thread-safe circular buffer.
+ * A simple, exceptionally not thread-safe circular buffer.
  *
  * Positively indexes the previous values (e.g. if you pushed 3 values, they will be at
  * arr[0], arr[1], and arr[2], with arr[0] being the most recent).
  */
-template <typename T, std::size_t maxSize> class CircularBuffer {
+template <typename T> class CircularBuffer {
 public:
     typedef T value_type;
     typedef T& reference;
@@ -21,22 +22,23 @@ public:
     typedef std::size_t size_type;
 
 
-    CircularBuffer()
-    : valueArr{}
-    , head(arrLen - 1)
+    CircularBuffer(std::size_t maxSize)
+    : valueVec(maxSize)
+    , head(valueVec.size() - 1)
     {
     }
 
-    CircularBuffer(value_type initialValue)
-    : head(arrLen - 1)
+    CircularBuffer(std::size_t maxSize, value_type initialValue)
+    : valueVec(maxSize)
+    , head(valueVec.size() - 1)
     {
-        valueArr.fill(initialValue);
+        std::fill(valueVec.begin(), valueVec.end(), initialValue);
     }
 
     CircularBuffer(const CircularBuffer& other)
     : head(other.head)
     {
-        valueArr = other.valueArr;
+        valueVec = other.valueVec;
     }
 
     CircularBuffer& operator=(const CircularBuffer& other)
@@ -44,7 +46,7 @@ public:
         // Check for self assignment.
         if (this != &other) {
             head = other.head;
-            valueArr = other.valueArr;
+            valueVec = other.valueVec;
         }
 
         return *this;
@@ -64,7 +66,7 @@ public:
         head = decrement(head);
 
         // Write the value
-        valueArr[head] = value;
+        valueVec[head] = value;
     }
 
     template <class... Args>
@@ -73,7 +75,7 @@ public:
         head = decrement(head);
 
         // Write the value
-        valueArr[head] = value_type(args...);
+        valueVec[head] = value_type(args...);
     }
 
     template <class... Args>
@@ -82,7 +84,7 @@ public:
         head = decrement(head);
 
         // Write the value
-        valueArr[head] = {args...};
+        valueVec[head] = {args...};
     }
 
     /**
@@ -91,21 +93,21 @@ public:
      */
     reference operator[](size_type index)
     {
-        if (index >= arrLen) {
+        if (index >= valueVec.size()) {
             throw std::out_of_range("index larger than maxSize - 1.");
         }
 
         size_type requestedIndex = increment(head, index);
-        return valueArr[requestedIndex];
+        return valueVec[requestedIndex];
     }
     const_reference operator[](size_type index) const
     {
-        if (index >= arrLen) {
+        if (index >= valueVec.size()) {
             throw std::out_of_range("index larger than maxSize - 1.");
         }
 
         size_type requestedIndex = increment(head, index);
-        return valueArr[requestedIndex];
+        return valueVec[requestedIndex];
     }
 
     /**
@@ -113,7 +115,7 @@ public:
      */
     size_type size() const
     {
-        return arrLen;
+        return valueVec.size();
     }
 
     /**
@@ -121,17 +123,12 @@ public:
      */
     void fill(const value_type value)
     {
-        valueArr.fill(value);
+        valueVec.fill(value);
     }
 
 private:
-    /**
-     * The length of the underlying array.
-     */
-    static constexpr size_type arrLen = maxSize;
-
     /** The data structure that holds the queue's elements. */
-    std::array<value_type, arrLen> valueArr;
+    std::vector<value_type> valueVec;
 
     /**
      * Index of the most recently inserted element.
@@ -147,7 +144,7 @@ private:
      */
     size_type increment(const size_type index, const size_type amount) const
     {
-        return (index + amount) % arrLen;
+        return (index + amount) % valueVec.size();
     }
 
     /**
@@ -156,7 +153,7 @@ private:
      */
     size_type decrement(const size_type index) const
     {
-        return (index + arrLen - 1) % arrLen;
+        return (index + valueVec.size() - 1) % valueVec.size();
     }
 };
 
